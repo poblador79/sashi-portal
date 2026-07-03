@@ -13,6 +13,18 @@ const LOGOS = {
   'MOUNTAIN BEEF':   `${CDN}/v1783000065/IMG_5907_svbfff.jpg`,
 };
 
+const BRAND_DESC = {
+  'SASHI': 'Triple Gold Winner · WSC',
+  'SAGYU': 'Artisan Collection · Esclusivo IT',
+  'PRUSSIAN BLACK': 'Eat Less Choose Better · Halal',
+  'FREYGAARD': 'Nordic Nature Finland · Danish Red',
+  'FREYGAARD CHOCO': 'Scottona con dieta di cacao · Finland',
+  'WAYNE & WILLIS': '100% Original · Linea Premium',
+  'MOUNTAIN BEEF': 'Simply the Best · Simmental · Halal',
+};
+
+const BRAND_ORDER = ['SASHI','SAGYU','PRUSSIAN BLACK','FREYGAARD','FREYGAARD CHOCO','WAYNE & WILLIS','MOUNTAIN BEEF'];
+
 function BrandLogo({ brand, size=52 }) {
   return (
     <div style={{ width:size, height:size, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -24,7 +36,7 @@ function BrandLogo({ brand, size=52 }) {
 function BrandCard({ brand, active, onClick }) {
   return (
     <button onClick={onClick}
-      style={{ background: active ? '#1a1500' : '#111', border: `1px solid ${active ? C.gold : '#2a2520'}`, borderRadius:'8px', cursor:'pointer', padding:'1.5rem 1rem', display:'flex', flexDirection:'column', alignItems:'center', gap:'12px', width:'100%', transition:'transform 0.15s', transform: active ? 'translateY(-2px)' : 'none', boxShadow: active ? `0 0 0 2px ${C.gold}` : 'none' }}>
+      style={{ background: active ? '#1a1500' : '#111', border: `1px solid ${active ? C.gold : '#2a2520'}`, borderRadius:'8px', cursor:'pointer', padding:'1.5rem 1rem', display:'flex', flexDirection:'column', alignItems:'center', gap:'12px', width:'100%', boxShadow: active ? `0 0 0 2px ${C.gold}` : 'none' }}>
       <div style={{ width:90, height:90, display:'flex', alignItems:'center', justifyContent:'center' }}>
         <img src={LOGOS[brand.name]} alt={brand.name} style={{ maxWidth:90, maxHeight:90, objectFit:'contain' }} />
       </div>
@@ -33,89 +45,6 @@ function BrandCard({ brand, active, onClick }) {
     </button>
   );
 }
-
-const BRANDS = [
-  { id:'sashi', name:'SASHI', desc:'Triple Gold Winner · WSC', cuts:[
-    {name:'Costata / Rib Eye Cube Roll Diamond — Vacca', price:40.00, unit:'cartone'},
-    {name:'Lombo / Striploin Diamond — Vacca', price:19.95, unit:'cartone'},
-    {name:'T-Bone Diamond — Vacca 6–8 kg', price:18.50, unit:'cartone'},
-    {name:'T-Bone Diamond — Scottona 5–6 kg', price:18.50, unit:'cartone'},
-    {name:'8 Costole Bone-In Diamond — Vacca', price:20.00, unit:'cartone'},
-    {name:'Filetto / Solomillo 3 kg+', price:26.50, unit:'cartone'},
-    {name:'Picanha Diamond — Vacca', price:18.50, unit:'cartone'},
-    {name:'Cuore di Scamone Diamond — Vacca', price:12.25, unit:'cartone'},
-    {name:'Pistola Scottona Finland 90+ Diamond', price:11.50, unit:'unità', unitLabel:'pistola (~65 kg)'},
-    {name:'Pistola Vacca Finland 90+ Diamond', price:10.95, unit:'unità', unitLabel:'pistola (~90 kg)'},
-    {name:'Fesa / Topside Scottona', price:11.25, unit:'cartone'},
-    {name:'Sottofesa Vacca', price:9.15, unit:'cartone'},
-    {name:'Spinacino / Tri-tip Diamond', price:12.00, unit:'cartone'},
-  ]},
-  { id:'sagyu', name:'SAGYU', desc:'Artisan Collection · Esclusivo IT', cuts:[
-    {name:'Lomo 16+ Diamond — Scottona', price:19.75, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 18+ Diamond — Scottona', price:20.00, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 22+ Diamond — Scottona', price:21.00, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 22+ AAA — Scottona', price:29.75, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 22+ Gold — Scottona', price:16.75, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-  ]},
-  { id:'prussian', name:'PRUSSIAN BLACK', desc:'Eat Less Choose Better · Halal', cuts:[
-    {name:'Lomo 23+ Standard', price:13.75, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 23+ Gold', price:14.75, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 23+ Diamond', price:18.25, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 23+ AAA', price:22.25, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 25+ Gold', price:16.50, unit:'unità', unitLabel:'lomo (~25–27 kg)'},
-    {name:'Lomo 25+ Diamond', price:19.75, unit:'unità', unitLabel:'lomo (~25–27 kg)'},
-    {name:'Lomo 27+ Diamond', price:20.25, unit:'unità', unitLabel:'lomo (~27–30 kg)'},
-    {name:'Lomo 30+ Diamond', price:20.50, unit:'unità', unitLabel:'lomo (~30+ kg)'},
-    {name:'Lomo 30+ AAA', price:25.25, unit:'unità', unitLabel:'lomo (~30+ kg)'},
-    {name:'Pistola Vacca 90+ Diamond', price:10.95, unit:'unità', unitLabel:'pistola (~90 kg)'},
-  ]},
-  { id:'freygaard', name:'FREYGAARD', desc:'Nordic Nature Finland · Danish Red', cuts:[
-    {name:'Lomo 23+ Standard — Vacca Nordic', price:15.25, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 23+ Gold — Vacca Nordic', price:16.25, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 23+ Diamond — Vacca Nordic', price:19.75, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 25+ Diamond — Vacca Nordic', price:21.25, unit:'unità', unitLabel:'lomo (~25–27 kg)'},
-    {name:'Lomo 30+ AAA — Vacca Nordic', price:26.75, unit:'unità', unitLabel:'lomo (~30+ kg)'},
-    {name:'Lomo 16+ Diamond — Scottona Finland', price:19.75, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 18+ Diamond — Scottona Finland', price:20.75, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 22+ Diamond — Scottona Finland', price:21.00, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Pistola Scottona Finland Standard', price:11.50, unit:'unità', unitLabel:'pistola (~65 kg)'},
-    {name:'Pistola Vacca Nordic 90+ Diamond', price:11.75, unit:'unità', unitLabel:'pistola (~90 kg)'},
-    {name:'8 Costole 14+ Gold — Vacca Nordic', price:18.00, unit:'cartone'},
-    {name:'8 Costole 14+ Diamond — Vacca Nordic', price:20.00, unit:'cartone'},
-  ]},
-  { id:'choco', name:'FREYGAARD CHOCO', desc:'Scottona con dieta di cacao · Finland', cuts:[
-    {name:'Lombata Diamond', price:22.00, unit:'cartone'},
-    {name:'Lombata Gold', price:19.75, unit:'cartone'},
-    {name:'T-Bone con Filetto Diamond', price:21.00, unit:'cartone'},
-    {name:'Loin Set Completo (Filetto+Ribeye+Striploin)', price:51.00, unit:'set', unitLabel:'set completo'},
-    {name:'8 Costole Bone-In Gold', price:20.00, unit:'cartone'},
-    {name:'Cuore di Scamone', price:19.75, unit:'cartone'},
-    {name:'Fesa / Topside', price:13.25, unit:'cartone'},
-    {name:'Pistola Scottona Choco Standard', price:12.50, unit:'unità', unitLabel:'pistola (~65 kg)'},
-    {name:'Tri-tip / Maminha', price:13.75, unit:'cartone'},
-  ]},
-  { id:'wayne', name:'WAYNE & WILLIS', desc:'100% Original · Linea Premium', cuts:[
-    {name:'Controfiletto 5 kg+', price:15.00, unit:'cartone'},
-    {name:'Controfiletto 6 kg+', price:15.75, unit:'cartone'},
-    {name:'Controfiletto 7 kg+', price:16.25, unit:'cartone'},
-    {name:'Controfiletto 8 kg+', price:16.50, unit:'cartone'},
-    {name:'Lombo Finland 7 kg+', price:17.00, unit:'cartone'},
-    {name:'Lombo Finland 8 kg+', price:17.50, unit:'cartone'},
-    {name:'Costata cap on / Entrecôte', price:16.00, unit:'cartone'},
-    {name:'Ribeye 3.0+', price:25.00, unit:'cartone'},
-    {name:'Côte de Boeuf 5 costole', price:24.50, unit:'cartone'},
-  ]},
-  { id:'mountain', name:'MOUNTAIN BEEF', desc:'Simply the Best · Simmental · Halal', cuts:[
-    {name:'Lomo 23+ Standard', price:14.00, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 23+ Gold', price:15.00, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 23+ Diamond', price:18.50, unit:'unità', unitLabel:'lomo (~23–25 kg)'},
-    {name:'Lomo 25+ Gold', price:16.75, unit:'unità', unitLabel:'lomo (~25–27 kg)'},
-    {name:'Lomo 25+ Diamond', price:20.00, unit:'unità', unitLabel:'lomo (~25–27 kg)'},
-    {name:'Lomo 27+ Diamond', price:20.50, unit:'unità', unitLabel:'lomo (~27–30 kg)'},
-    {name:'Lomo 30+ Diamond', price:20.75, unit:'unità', unitLabel:'lomo (~30+ kg)'},
-    {name:'Lomo 30+ AAA', price:25.50, unit:'unità', unitLabel:'lomo (~30+ kg)'},
-  ]},
-];
 
 const CLIENTS = {
   'sb-mf8k2':{ name:'Marco Ferretti', company:'Macelleria Ferretti', city:'Milano', type:'returning',
@@ -146,8 +75,8 @@ function CutRow({ cut, onAdd }) {
   return (
     <div style={{padding:'0.875rem 1.5rem', borderBottom:`1px solid ${C.border}`, display:'flex', alignItems:'center', gap:'12px'}}>
       <div style={{flex:1}}>
-        <div style={{fontSize:'13px', color:C.text, marginBottom:'3px'}}>{cut.name}</div>
-        <div style={{fontSize:'11px', color:C.muted}}>€{cut.price.toFixed(2)}/kg · {cut.unitLabel||(cut.unit==='cartone'?'cartoni (~18 kg)':'unità')}</div>
+        <div style={{fontSize:'13px', color:C.text, marginBottom:'3px'}}>{cut.corte}</div>
+        <div style={{fontSize:'11px', color:C.muted}}>€{cut.precio.toFixed(2)}/kg · {cut.unitLabel||(cut.unidad==='cartone'?'cartoni (~18 kg)':'unità')}</div>
       </div>
       <div style={{display:'flex', gap:'8px', flexShrink:0, alignItems:'center'}}>
         <button onClick={()=>setQty(q=>Math.max(0,q-1))} style={{background:'none',border:`1px solid ${C.border}`,color:C.muted,width:'28px',height:'28px',cursor:'pointer',fontSize:'16px',borderRadius:'2px',fontFamily:'Georgia'}}>−</button>
@@ -176,7 +105,7 @@ function CartPanel({ cart, setCart, onConfirm, confirmed, isNew }){
               <div style={{flex:1}}>
                 <div style={{fontSize:'11px',color:C.muted,marginBottom:'1px'}}>{item.brandName}</div>
                 <div style={{fontSize:'12px',color:C.text}}>{item.cutName}</div>
-                <div style={{fontSize:'10px',color:C.muted}}>{item.qty} {item.unit==='cartone'?'cartoni':'unità'} · €{item.price.toFixed(2)}/kg</div>
+                <div style={{fontSize:'10px',color:C.muted}}>{item.qty} {item.unidad==='cartone'?'cartoni':'unità'} · €{item.price.toFixed(2)}/kg</div>
               </div>
               <button onClick={()=>removeFromCart(item.key)}
                 style={{background:'none',border:`1px solid #3a2020`,color:'#8a5050',cursor:'pointer',fontSize:'14px',lineHeight:1,width:'24px',height:'24px',borderRadius:'2px',flexShrink:0}}>×</button>
@@ -204,11 +133,11 @@ function CartPanel({ cart, setCart, onConfirm, confirmed, isNew }){
   );
 }
 
-function NewClientView({ client, cart, setCart, onConfirm, confirmed }){
+function NewClientView({ client, brands, cart, setCart, onConfirm, confirmed }){
   const [activeBrand, setActiveBrand] = useState(null);
   const addToCart=(cut,qty)=>{
-    const key=`${activeBrand.id}::${cut.name}`;
-    setCart(c=>{const ex=c.find(i=>i.key===key);return ex?c.map(i=>i.key===key?{...i,qty:i.qty+qty}:i):[...c,{key,brandId:activeBrand.id,brandName:activeBrand.name,cutName:cut.name,price:cut.price,unit:cut.unit,unitLabel:cut.unitLabel||(cut.unit==='cartone'?'cartoni':'unità'),qty}];});
+    const key=`${activeBrand.name}::${cut.corte}`;
+    setCart(c=>{const ex=c.find(i=>i.key===key);return ex?c.map(i=>i.key===key?{...i,qty:i.qty+qty}:i):[...c,{key,brandName:activeBrand.name,cutName:cut.corte,price:cut.precio,unidad:cut.unidad,unitLabel:cut.unitLabel,qty}];});
   };
   return(
     <div style={{maxWidth:'980px',margin:'0 auto',padding:'2rem 1.5rem'}}>
@@ -222,8 +151,8 @@ function NewClientView({ client, cart, setCart, onConfirm, confirmed }){
       <div style={{marginBottom:'2rem'}}>
         <div style={{fontSize:'11px',letterSpacing:'0.2em',textTransform:'uppercase',color:C.gold,marginBottom:'1.25rem'}}>La Collezione — Scegli una marca</div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(130px,1fr))',gap:'12px'}}>
-          {BRANDS.map(brand=>(
-            <BrandCard key={brand.id} brand={brand} active={activeBrand?.id===brand.id} onClick={()=>setActiveBrand(activeBrand?.id===brand.id?null:brand)}/>
+          {brands.map(brand=>(
+            <BrandCard key={brand.name} brand={brand} active={activeBrand?.name===brand.name} onClick={()=>setActiveBrand(activeBrand?.name===brand.name?null:brand)}/>
           ))}
         </div>
       </div>
@@ -246,7 +175,7 @@ function NewClientView({ client, cart, setCart, onConfirm, confirmed }){
   );
 }
 
-function ReturningClientView({ client, cart, setCart, onConfirm, confirmed }){
+function ReturningClientView({ client, brands, cart, setCart, onConfirm, confirmed }){
   const [habCart,setHabCart]=useState(client.habitual.map(h=>({...h,key:`${h.brandId}::${h.cutName}`})));
   const [showCatalog,setShowCatalog]=useState(false);
   const [activeBrand,setActiveBrand]=useState(null);
@@ -261,8 +190,8 @@ function ReturningClientView({ client, cart, setCart, onConfirm, confirmed }){
     setHabCart(updated); setCart(updated.filter(i=>i.qty>0));
   };
   const addFromCatalog=(cut,qty)=>{
-    const key=`${activeBrand.id}::${cut.name}`;
-    const newItem={key,brandId:activeBrand.id,brandName:activeBrand.name,cutName:cut.name,price:cut.price,unit:cut.unit,unitLabel:cut.unitLabel||(cut.unit==='cartone'?'cartoni':'unità'),qty};
+    const key=`${activeBrand.name}::${cut.corte}`;
+    const newItem={key,brandId:activeBrand.name.toLowerCase(),brandName:activeBrand.name,cutName:cut.corte,price:cut.precio,unidad:cut.unidad,unitLabel:cut.unitLabel,qty};
     const existsInHab=habCart.find(i=>i.key===key);
     if(existsInHab){
       const updated=habCart.map(i=>i.key===key?{...i,qty:i.qty+qty}:i);
@@ -297,7 +226,7 @@ function ReturningClientView({ client, cart, setCart, onConfirm, confirmed }){
               <button onClick={()=>updateQty(item.key,item.qty-1)} style={{background:'none',border:`1px solid ${C.border}`,color:C.muted,width:'28px',height:'28px',cursor:'pointer',fontSize:'16px',borderRadius:'2px',fontFamily:'Georgia'}}>−</button>
               <span style={{fontSize:'15px',color:C.text,minWidth:'24px',textAlign:'center'}}>{item.qty}</span>
               <button onClick={()=>updateQty(item.key,item.qty+1)} style={{background:'none',border:`1px solid ${C.border}`,color:C.muted,width:'28px',height:'28px',cursor:'pointer',fontSize:'16px',borderRadius:'2px',fontFamily:'Georgia'}}>+</button>
-              <span style={{fontSize:'10px',color:C.muted,minWidth:'44px'}}>{item.unit==='cartone'?'cartoni':'unità'}</span>
+              <span style={{fontSize:'10px',color:C.muted,minWidth:'44px'}}>{item.unidad==='cartone'?'cartoni':'unità'}</span>
               <button onClick={()=>removeHab(item.key)}
                 style={{background:'none',border:`1px solid #3a2020`,color:'#8a5050',width:'26px',height:'26px',cursor:'pointer',fontSize:'14px',borderRadius:'2px',flexShrink:0}}>×</button>
             </div>
@@ -312,8 +241,8 @@ function ReturningClientView({ client, cart, setCart, onConfirm, confirmed }){
         {showCatalog&&(
           <div style={{marginTop:'12px'}}>
             <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(120px,1fr))',gap:'10px',marginBottom:'16px'}}>
-              {BRANDS.map(brand=>(
-                <BrandCard key={brand.id} brand={brand} active={activeBrand?.id===brand.id} onClick={()=>setActiveBrand(activeBrand?.id===brand.id?null:brand)}/>
+              {brands.map(brand=>(
+                <BrandCard key={brand.name} brand={brand} active={activeBrand?.name===brand.name} onClick={()=>setActiveBrand(activeBrand?.name===brand.name?null:brand)}/>
               ))}
             </div>
             {activeBrand&&(
@@ -381,10 +310,44 @@ export default function App(){
   const [cart,setCart]=useState([]);
   const [confirmed,setConfirmed]=useState(false);
   const [lang,setLang]=useState('IT');
-  useEffect(()=>{const t=getToken();setView(t&&CLIENTS[t]?t:'admin');},[]);
+  const [brands,setBrands]=useState([]);
+  const [loading,setLoading]=useState(true);
+
+  useEffect(()=>{
+    const t=getToken();
+    setView(t&&CLIENTS[t]?t:'admin');
+
+    fetch('/api/precios')
+      .then(r=>r.json())
+      .then(data=>{
+        const grouped={};
+        data.precios.forEach(p=>{
+          if(!grouped[p.marca]) grouped[p.marca]=[];
+          grouped[p.marca].push(p);
+        });
+        const brandList=BRAND_ORDER
+          .filter(name=>grouped[name])
+          .map(name=>({ name, desc:BRAND_DESC[name]||'', cuts:grouped[name] }));
+        setBrands(brandList);
+        setLoading(false);
+      })
+      .catch(()=>setLoading(false));
+  },[]);
+
   const handleConfirm=()=>{if(cart.length===0||confirmed)return;setConfirmed(true);setCart([]);};
-  if(!view)return null;
+
+  if(!view||loading) return(
+    <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:C.bg}}>
+      <div style={{textAlign:'center'}}>
+        <div style={{fontSize:'11px',letterSpacing:'0.25em',textTransform:'uppercase',color:C.gold,marginBottom:'12px'}}>JN Meat International</div>
+        <div style={{fontSize:'28px',color:C.text,marginBottom:'8px'}}>Sashi Beef</div>
+        <div style={{fontSize:'12px',color:C.muted}}>Caricamento...</div>
+      </div>
+    </div>
+  );
+
   if(view==='admin')return <AdminPanel onEnter={setView}/>;
+
   const client=CLIENTS[view];
   return(
     <div>
@@ -401,8 +364,8 @@ export default function App(){
         </div>
       </div>
       {client.type==='new'
-        ?<NewClientView client={client} cart={cart} setCart={setCart} onConfirm={handleConfirm} confirmed={confirmed}/>
-        :<ReturningClientView client={client} cart={cart} setCart={setCart} onConfirm={handleConfirm} confirmed={confirmed}/>
+        ?<NewClientView client={client} brands={brands} cart={cart} setCart={setCart} onConfirm={handleConfirm} confirmed={confirmed}/>
+        :<ReturningClientView client={client} brands={brands} cart={cart} setCart={setCart} onConfirm={handleConfirm} confirmed={confirmed}/>
       }
     </div>
   );
