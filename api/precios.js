@@ -14,7 +14,7 @@ export default async function handler(req, res) {
     const sheets = google.sheets({ version: 'v4', auth });
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: '1D2R3RZXzgy8iNy5N4_g0uZurMu0EF2JgfgM6fsjJAFs',
-      range: 'precios!A2:F200',
+      range: 'precios!A2:H200',
     });
 
     const rows = response.data.values || [];
@@ -27,6 +27,8 @@ export default async function handler(req, res) {
         unidad: row[3] || 'cartone',
         unitLabel: row[4] || '',
         disponible: row[5] !== 'FALSE',
+        offerta: row[6] === 'TRUE',
+        prezzo_speciale: row[7] ? parseFloat(row[7]) : null,
       }));
 
     res.status(200).json({ precios });
