@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const C = { gold:'#C9A96E', bg:'#0d0d0d', surface:'#141414', border:'#2a2520', muted:'#8a8070', text:'#f0ede8', dim:'#4a4040', green:'#6aaa80', greenBg:'#0a1a10', greenBorder:'#1a3a20', red:'#8b1a1a' };
+const C = { gold:'#C9A96E', bg:'#0d0d0d', surface:'#141414', border:'#2a2520', muted:'#8a8070', text:'#f0ede8', dim:'#4a4040', green:'#6aaa80', greenBg:'#0a1a10', greenBorder:'#1a3a20' };
 
 const CDN = 'https://res.cloudinary.com/dpi1hvgnt/image/upload';
 const LOGOS = {
@@ -70,6 +70,34 @@ const CLIENTS = {
 
 function getToken(){ try{ return new URLSearchParams(window.location.search).get('client'); }catch{ return null; } }
 
+function SpecialRow({ cut, onAdd }) {
+  const [qty, setQty] = useState(0);
+  return (
+    <div style={{ background:'#0f0d08', padding:'1.25rem 1.5rem', display:'flex', flexDirection:'column', gap:'10px' }}>
+      <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
+        <BrandLogo brand={cut.marca} size={32}/>
+        <div style={{ flex:1 }}>
+          <div style={{ fontSize:'10px', color:C.muted, marginBottom:'2px' }}>{cut.marca}</div>
+          <div style={{ fontSize:'13px', color:C.text }}>{cut.corte}</div>
+        </div>
+      </div>
+      <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
+        <span style={{ fontSize:'16px', color:C.gold, fontWeight:'bold' }}>€{cut.prezzo_speciale.toFixed(2)}/kg</span>
+        <span style={{ fontSize:'11px', color:C.muted, textDecoration:'line-through' }}>€{cut.precio.toFixed(2)}</span>
+      </div>
+      <div style={{ display:'flex', alignItems:'center', gap:'6px' }}>
+        <button onClick={()=>setQty(q=>Math.max(0,q-1))} style={{ background:'none', border:`1px solid ${C.border}`, color:C.muted, width:'28px', height:'28px', cursor:'pointer', fontSize:'16px', borderRadius:'2px', fontFamily:'Georgia' }}>−</button>
+        <span style={{ fontSize:'13px', color:C.text, minWidth:'20px', textAlign:'center' }}>{qty}</span>
+        <button onClick={()=>setQty(q=>q+1)} style={{ background:'none', border:`1px solid ${C.border}`, color:C.muted, width:'28px', height:'28px', cursor:'pointer', fontSize:'16px', borderRadius:'2px', fontFamily:'Georgia' }}>+</button>
+        <button onClick={()=>{if(qty>0){onAdd(cut,qty);setQty(0);}}}
+          style={{ flex:1, background:qty>0?C.gold:'#2a2520', color:qty>0?C.bg:C.dim, border:'none', padding:'7px', borderRadius:'2px', cursor:qty>0?'pointer':'default', fontSize:'11px', letterSpacing:'0.06em', textTransform:'uppercase', fontFamily:'Georgia' }}>
+          Aggiungi
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function PrezziSpeciali({ items, onAdd }) {
   return (
     <div style={{ marginBottom:'2rem' }}>
@@ -77,38 +105,10 @@ function PrezziSpeciali({ items, onAdd }) {
         <div style={{ fontSize:'11px', letterSpacing:'0.2em', textTransform:'uppercase', color:C.gold }}>Prezzi Speciali</div>
         <div style={{ fontSize:'10px', color:'#6a4a20', background:'#1a0e00', border:'1px solid #3a2010', padding:'2px 10px', borderRadius:'2px', letterSpacing:'0.08em', textTransform:'uppercase' }}>Questa settimana</div>
       </div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px, 1fr))', gap:'1px', background:C.gold+'33', border:`1px solid ${C.gold}44` }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:'1px', background:`${C.gold}33`, border:`1px solid ${C.gold}44` }}>
         {items.map((p, i) => (
           <SpecialRow key={i} cut={p} onAdd={onAdd}/>
         ))}
-      </div>
-    </div>
-  );
-}
-
-function SpecialRow({ cut, onAdd }) {
-  const [qty, setQty] = useState(0);
-  const saving = cut.precio - cut.prezzo_speciale;
-  return (
-    <div style={{ background:'#0f0d08', padding:'1.25rem 1.5rem', display:'flex', alignItems:'center', gap:'12px' }}>
-      <BrandLogo brand={cut.marca} size={36}/>
-      <div style={{ flex:1 }}>
-        <div style={{ fontSize:'11px', color:C.muted, marginBottom:'2px' }}>{cut.marca}</div>
-        <div style={{ fontSize:'13px', color:C.text, marginBottom:'4px' }}>{cut.corte}</div>
-        <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
-          <span style={{ fontSize:'16px', color:C.gold, fontWeight:'bold' }}>€{cut.prezzo_speciale.toFixed(2)}/kg</span>
-          <span style={{ fontSize:'11px', color:C.muted, textDecoration:'line-through' }}>€{cut.precio.toFixed(2)}</span>
-          <span style={{ fontSize:'10px', color:'#6aaa80', background:C.greenBg, border:`1px solid ${C.greenBorder}`, padding:'1px 6px', borderRadius:'2px' }}>-€{saving.toFixed(2)}</span>
-        </div>
-      </div>
-      <div style={{ display:'flex', alignItems:'center', gap:'6px', flexShrink:0 }}>
-        <button onClick={()=>setQty(q=>Math.max(0,q-1))} style={{ background:'none', border:`1px solid ${C.border}`, color:C.muted, width:'26px', height:'26px', cursor:'pointer', fontSize:'14px', borderRadius:'2px', fontFamily:'Georgia' }}>−</button>
-        <span style={{ fontSize:'13px', color:C.text, minWidth:'18px', textAlign:'center' }}>{qty}</span>
-        <button onClick={()=>setQty(q=>q+1)} style={{ background:'none', border:`1px solid ${C.border}`, color:C.muted, width:'26px', height:'26px', cursor:'pointer', fontSize:'14px', borderRadius:'2px', fontFamily:'Georgia' }}>+</button>
-        <button onClick={()=>{if(qty>0){onAdd(cut,qty);setQty(0);}}}
-          style={{ background:qty>0?C.gold:'#2a2520', color:qty>0?C.bg:C.dim, border:'none', padding:'5px 10px', borderRadius:'2px', cursor:qty>0?'pointer':'default', fontSize:'10px', letterSpacing:'0.06em', textTransform:'uppercase', fontFamily:'Georgia', whiteSpace:'nowrap' }}>
-          Aggiungi
-        </button>
       </div>
     </div>
   );
@@ -180,7 +180,7 @@ function CartPanel({ cart, setCart, onConfirm, confirmed, isNew }){
 function NewClientView({ client, brands, speciali, cart, setCart, onConfirm, confirmed }){
   const [activeBrand, setActiveBrand] = useState(null);
   const addToCart=(cut,qty)=>{
-    const key=`${activeBrand?.name||cut.marca}::${cut.corte||cut.cutName}`;
+    const key=`${cut.marca||activeBrand?.name}::${cut.corte||cut.cutName}`;
     const brandName=cut.marca||activeBrand?.name;
     const cutName=cut.corte||cut.cutName;
     const price=cut.prezzo_speciale||cut.precio||cut.price;
@@ -243,13 +243,13 @@ function ReturningClientView({ client, brands, speciali, cart, setCart, onConfir
     setHabCart(updated); setCart(updated.filter(i=>i.qty>0));
   };
   const addFromCatalog=(cut,qty)=>{
-    const key=`${activeBrand?.name||cut.marca}::${cut.corte||cut.cutName}`;
+    const key=`${cut.marca||activeBrand?.name}::${cut.corte||cut.cutName}`;
     const brandName=cut.marca||activeBrand?.name;
     const cutName=cut.corte||cut.cutName;
     const price=cut.prezzo_speciale||cut.precio||cut.price;
     const unidad=cut.unidad||cut.unit||'cartone';
     const unitLabel=cut.unitLabel||'';
-    const newItem={key,brandId:brandName.toLowerCase(),brandName,cutName,price,unidad,unitLabel,qty};
+    const newItem={key,brandId:brandName?.toLowerCase(),brandName,cutName,price,unidad,unitLabel,qty};
     const existsInHab=habCart.find(i=>i.key===key);
     if(existsInHab){
       const updated=habCart.map(i=>i.key===key?{...i,qty:i.qty+qty}:i);
