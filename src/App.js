@@ -47,7 +47,7 @@ function BrandCard({ brand, active, onClick }) {
 }
 
 const CLIENTS = {
-  'sb-mf8k2':{ name:'Marco Ferretti', company:'Macelleria Ferretti', city:'Milano', type:'returning',
+  'sb-mf8k2':{ name:'Marco Ferretti', company:'Macelleria Ferretti', city:'Milano', phone:'393334455667', type:'returning',
     habitual:[
       {brandId:'freygaard', brandName:'FREYGAARD', cutName:'Pistola Scottona Finland Standard', price:11.50, unit:'unità', unitLabel:'pistola (~65 kg)', qty:5},
       {brandId:'choco', brandName:'FREYGAARD CHOCO', cutName:'Pistola Scottona Choco Standard', price:12.50, unit:'unità', unitLabel:'pistola (~65 kg)', qty:2},
@@ -58,14 +58,14 @@ const CLIENTS = {
       {brandId:'wayne', brandName:'WAYNE & WILLIS', cutName:'Controfiletto 5 kg+', price:15.00, unit:'cartone', unitLabel:'cartoni (~18 kg)', qty:2},
     ]
   },
-  'sb-lb3p9':{ name:'Lucia Bianchi', company:'Bisteccheria Bianchi', city:'Torino', type:'returning',
+  'sb-lb3p9':{ name:'Lucia Bianchi', company:'Bisteccheria Bianchi', city:'Torino', phone:'', type:'returning',
     habitual:[
       {brandId:'sagyu', brandName:'SAGYU', cutName:'Lomo 22+ Diamond — Scottona', price:21.00, unit:'unità', unitLabel:'lomo (~23–25 kg)', qty:2},
       {brandId:'prussian', brandName:'PRUSSIAN BLACK', cutName:'Lomo 25+ Diamond', price:19.75, unit:'unità', unitLabel:'lomo (~25–27 kg)', qty:3},
       {brandId:'mountain', brandName:'MOUNTAIN BEEF', cutName:'Lomo 23+ Gold', price:15.00, unit:'unità', unitLabel:'lomo (~23–25 kg)', qty:2},
     ]
   },
-  'sb-demo':{ name:'Giovanni Rossi', company:'Ristorante Rossi', city:'Roma', type:'new' },
+  'sb-demo':{ name:'Giovanni Rossi', company:'Ristorante Rossi', city:'Roma', phone:'', type:'new' },
 };
 
 function getToken(){ try{ return new URLSearchParams(window.location.search).get('client'); }catch{ return null; } }
@@ -159,14 +159,14 @@ function CartPanel({ cart, setCart, onConfirm, confirmed, isNew }){
       </div>
       <div style={{background:C.surface,padding:'1.75rem',display:'flex',flexDirection:'column',justifyContent:'space-between'}}>
         <div style={{fontSize:'13px',color:confirmed?C.green:C.muted,lineHeight:1.8}}>
-          {confirmed?'✓ Richiesta inviata a David via WhatsApp'
+          {confirmed?'✓ Ordine inviato! David ti contatterà presto.'
             :isNew?'Componi il tuo ordine di prova. David ti contatterà entro 2 ore lavorative.'
             :'Il tuo ordine verrà inviato a David via WhatsApp. Conferma entro 2 ore lavorative.'}
         </div>
         <div style={{display:'flex',flexDirection:'column',gap:'10px',marginTop:'1.5rem'}}>
           <button onClick={onConfirm} disabled={cart.length===0||confirmed}
             style={{background:cart.length>0&&!confirmed?C.gold:'#2a2520',color:cart.length>0&&!confirmed?C.bg:C.dim,border:'none',padding:'14px',borderRadius:'2px',cursor:cart.length>0&&!confirmed?'pointer':'default',fontSize:'12px',letterSpacing:'0.12em',textTransform:'uppercase',fontFamily:'Georgia, serif',fontWeight:'bold'}}>
-            {isNew?'Invia richiesta di prova':'Conferma ordine'}
+            {confirmed?'✓ Inviato':(isNew?'Invia richiesta di prova':'Conferma ordine')}
           </button>
           <a href="https://wa.me/34694204152" target="_blank" rel="noreferrer" style={{display:'block',textAlign:'center',background:'none',border:`1px solid ${C.border}`,color:C.muted,padding:'12px',borderRadius:'2px',fontSize:'12px',letterSpacing:'0.08em',textTransform:'uppercase',textDecoration:'none',fontFamily:'Georgia, serif'}}>
             💬 Contatta David
@@ -398,7 +398,26 @@ export default function App(){
       .catch(()=>setLoading(false));
   },[]);
 
-  const handleConfirm=()=>{if(cart.length===0||confirmed)return;setConfirmed(true);setCart([]);};
+  const handleConfirm=async()=>{
+    if(cart.length===0||confirmed)return;
+    const client=CLIENTS[view];
+    const payload={
+      clientName: client.name,
+      company: client.company,
+      phone: client.phone||'',
+      cart: cart.map(i=>({name:`${i.brandName} - ${i.cutName}`, qty:i.qty, unit:i.unidad})),
+      timestamp: new Date().toISOString()
+    };
+    try{
+      await fetch('https://hook.eu2.make.com/6ehfsk7edb4dq50vayhue5v7bx4ndws9',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      });
+    }catch(e){console.error('Webhook error:',e);}
+    setConfirmed(true);
+    setCart([]);
+  };
 
   if(!view||loading) return(
     <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:C.bg}}>
