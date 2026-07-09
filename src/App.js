@@ -25,6 +25,25 @@ const BRAND_DESC = {
 
 const BRAND_ORDER = ['SASHI','SAGYU','PRUSSIAN BLACK','FREYGAARD','FREYGAARD CHOCO','WAYNE & WILLIS','MOUNTAIN BEEF'];
 
+const HABITUAL = {
+  'sb-mf8k2': [
+    {brandId:'freygaard', brandName:'FREYGAARD', cutName:'Pistola Scottona Finland Standard', price:11.50, unit:'unità', unitLabel:'pistola (~65 kg)', qty:5},
+    {brandId:'choco', brandName:'FREYGAARD CHOCO', cutName:'Pistola Scottona Choco Standard', price:12.50, unit:'unità', unitLabel:'pistola (~65 kg)', qty:2},
+    {brandId:'sashi', brandName:'SASHI', cutName:'Cuore di Scamone Diamond — Vacca', price:12.25, unit:'cartone', unitLabel:'cartoni (~18 kg)', qty:10},
+    {brandId:'sashi', brandName:'SASHI', cutName:'Sottofesa Vacca', price:9.15, unit:'cartone', unitLabel:'cartoni (~18 kg)', qty:3},
+    {brandId:'sashi', brandName:'SASHI', cutName:'Fesa / Topside Scottona', price:11.25, unit:'cartone', unitLabel:'cartoni (~18 kg)', qty:5},
+    {brandId:'freygaard', brandName:'FREYGAARD', cutName:'8 Costole 14+ Diamond — Vacca Nordic', price:20.00, unit:'cartone', unitLabel:'cartoni (~18 kg)', qty:3},
+    {brandId:'wayne', brandName:'WAYNE & WILLIS', cutName:'Controfiletto 5 kg+', price:15.00, unit:'cartone', unitLabel:'cartoni (~18 kg)', qty:2},
+  ],
+  'sb-lb3p9': [
+    {brandId:'sagyu', brandName:'SAGYU', cutName:'Lomo 22+ Diamond — Scottona', price:21.00, unit:'unità', unitLabel:'lomo (~23–25 kg)', qty:2},
+    {brandId:'prussian', brandName:'PRUSSIAN BLACK', cutName:'Lomo 25+ Diamond', price:19.75, unit:'unità', unitLabel:'lomo (~25–27 kg)', qty:3},
+    {brandId:'mountain', brandName:'MOUNTAIN BEEF', cutName:'Lomo 23+ Gold', price:15.00, unit:'unità', unitLabel:'lomo (~23–25 kg)', qty:2},
+  ],
+};
+
+function getToken(){ try{ return new URLSearchParams(window.location.search).get('client'); }catch{ return null; } }
+
 function BrandLogo({ brand, size=52 }) {
   return (
     <div style={{ width:size, height:size, flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -45,30 +64,6 @@ function BrandCard({ brand, active, onClick }) {
     </button>
   );
 }
-
-const CLIENTS = {
-  'sb-mf8k2':{ name:'Marco Ferretti', company:'Macelleria Ferretti', city:'Milano', phone:'393334455667', type:'returning',
-    habitual:[
-      {brandId:'freygaard', brandName:'FREYGAARD', cutName:'Pistola Scottona Finland Standard', price:11.50, unit:'unità', unitLabel:'pistola (~65 kg)', qty:5},
-      {brandId:'choco', brandName:'FREYGAARD CHOCO', cutName:'Pistola Scottona Choco Standard', price:12.50, unit:'unità', unitLabel:'pistola (~65 kg)', qty:2},
-      {brandId:'sashi', brandName:'SASHI', cutName:'Cuore di Scamone Diamond — Vacca', price:12.25, unit:'cartone', unitLabel:'cartoni (~18 kg)', qty:10},
-      {brandId:'sashi', brandName:'SASHI', cutName:'Sottofesa Vacca', price:9.15, unit:'cartone', unitLabel:'cartoni (~18 kg)', qty:3},
-      {brandId:'sashi', brandName:'SASHI', cutName:'Fesa / Topside Scottona', price:11.25, unit:'cartone', unitLabel:'cartoni (~18 kg)', qty:5},
-      {brandId:'freygaard', brandName:'FREYGAARD', cutName:'8 Costole 14+ Diamond — Vacca Nordic', price:20.00, unit:'cartone', unitLabel:'cartoni (~18 kg)', qty:3},
-      {brandId:'wayne', brandName:'WAYNE & WILLIS', cutName:'Controfiletto 5 kg+', price:15.00, unit:'cartone', unitLabel:'cartoni (~18 kg)', qty:2},
-    ]
-  },
-  'sb-lb3p9':{ name:'Lucia Bianchi', company:'Bisteccheria Bianchi', city:'Torino', phone:'', type:'returning',
-    habitual:[
-      {brandId:'sagyu', brandName:'SAGYU', cutName:'Lomo 22+ Diamond — Scottona', price:21.00, unit:'unità', unitLabel:'lomo (~23–25 kg)', qty:2},
-      {brandId:'prussian', brandName:'PRUSSIAN BLACK', cutName:'Lomo 25+ Diamond', price:19.75, unit:'unità', unitLabel:'lomo (~25–27 kg)', qty:3},
-      {brandId:'mountain', brandName:'MOUNTAIN BEEF', cutName:'Lomo 23+ Gold', price:15.00, unit:'unità', unitLabel:'lomo (~23–25 kg)', qty:2},
-    ]
-  },
-  'sb-demo':{ name:'Giovanni Rossi', company:'Ristorante Rossi', city:'Roma', phone:'', type:'new' },
-};
-
-function getToken(){ try{ return new URLSearchParams(window.location.search).get('client'); }catch{ return null; } }
 
 function SpecialRow({ cut, onAdd }) {
   const [qty, setQty] = useState(0);
@@ -106,9 +101,7 @@ function PrezziSpeciali({ items, onAdd }) {
         <div style={{ fontSize:'10px', color:'#6a4a20', background:'#1a0e00', border:'1px solid #3a2010', padding:'2px 10px', borderRadius:'2px', letterSpacing:'0.08em', textTransform:'uppercase' }}>Questa settimana</div>
       </div>
       <div style={{ display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:'1px', background:`${C.gold}33`, border:`1px solid ${C.gold}44` }}>
-        {items.map((p, i) => (
-          <SpecialRow key={i} cut={p} onAdd={onAdd}/>
-        ))}
+        {items.map((p, i) => <SpecialRow key={i} cut={p} onAdd={onAdd}/>)}
       </div>
     </div>
   );
@@ -197,9 +190,7 @@ function NewClientView({ client, brands, speciali, cart, setCart, onConfirm, con
           Esplora la nostra collezione e componi il tuo primo ordine di prova. Nessun impegno — ti contatteremo per confermare disponibilità e condizioni.
         </div>
       </div>
-
       {speciali.length>0 && <PrezziSpeciali items={speciali} onAdd={addToCart}/>}
-
       <div style={{marginBottom:'2rem'}}>
         <div style={{fontSize:'11px',letterSpacing:'0.2em',textTransform:'uppercase',color:C.gold,marginBottom:'1.25rem'}}>La Collezione — Scegli una marca</div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(130px,1fr))',gap:'12px'}}>
@@ -227,8 +218,8 @@ function NewClientView({ client, brands, speciali, cart, setCart, onConfirm, con
   );
 }
 
-function ReturningClientView({ client, brands, speciali, cart, setCart, onConfirm, confirmed }){
-  const [habCart,setHabCart]=useState(client.habitual.map(h=>({...h,key:`${h.brandId}::${h.cutName}`})));
+function ReturningClientView({ client, habitual, brands, speciali, cart, setCart, onConfirm, confirmed }){
+  const [habCart,setHabCart]=useState(habitual.map(h=>({...h,key:`${h.brandId}::${h.cutName}`})));
   const [showCatalog,setShowCatalog]=useState(false);
   const [activeBrand,setActiveBrand]=useState(null);
   useEffect(()=>{setCart(habCart);},[]);
@@ -267,9 +258,7 @@ function ReturningClientView({ client, brands, speciali, cart, setCart, onConfir
         <div style={{fontSize:'22px',color:C.text}}>{client.name}</div>
         <div style={{fontSize:'13px',color:C.muted}}>{client.city}</div>
       </div>
-
       {speciali.length>0 && <PrezziSpeciali items={speciali} onAdd={addFromCatalog}/>}
-
       <div style={{border:`1px solid ${C.border}`,background:C.surface,marginBottom:'2rem',borderRadius:'4px'}}>
         <div style={{padding:'1rem 1.5rem',borderBottom:`1px solid ${C.border}`,display:'flex',justifyContent:'space-between',alignItems:'center'}}>
           <div style={{fontSize:'11px',letterSpacing:'0.2em',textTransform:'uppercase',color:C.gold}}>I tuoi prodotti abituali</div>
@@ -295,7 +284,6 @@ function ReturningClientView({ client, brands, speciali, cart, setCart, onConfir
           </div>
         ))}
       </div>
-
       <div style={{marginBottom:'2rem'}}>
         <button onClick={()=>setShowCatalog(!showCatalog)}
           style={{background:'none',border:`1px solid ${C.border}`,color:C.muted,padding:'12px 20px',borderRadius:'4px',cursor:'pointer',fontSize:'12px',letterSpacing:'0.08em',textTransform:'uppercase',fontFamily:'Georgia, serif',width:'100%'}}>
@@ -327,7 +315,7 @@ function ReturningClientView({ client, brands, speciali, cart, setCart, onConfir
   );
 }
 
-function AdminPanel({ onEnter }){
+function AdminPanel({ clients, onEnter }){
   const [copied,setCopied]=useState(null);
   const base=window.location.href.split('?')[0];
   const copy=token=>{navigator.clipboard.writeText(`${base}?client=${token}`).then(()=>{setCopied(token);setTimeout(()=>setCopied(null),2000);});};
@@ -344,14 +332,14 @@ function AdminPanel({ onEnter }){
           <div style={{padding:'1rem 1.5rem',borderBottom:`1px solid ${C.border}`}}>
             <div style={{fontSize:'10px',letterSpacing:'0.15em',textTransform:'uppercase',color:C.gold}}>Link personalizzati</div>
           </div>
-          {Object.entries(CLIENTS).map(([token,c],i,arr)=>(
+          {Object.entries(clients).map(([token,c],i,arr)=>(
             <div key={token} style={{padding:'1rem 1.5rem',borderBottom:i<arr.length-1?`1px solid ${C.border}`:'none',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'12px'}}>
               <div style={{flex:1}}>
                 <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'3px'}}>
                   <div style={{fontSize:'14px',color:C.text}}>{c.name}</div>
                   <span style={{fontSize:'9px',letterSpacing:'0.08em',textTransform:'uppercase',color:c.type==='returning'?C.green:C.gold,background:c.type==='returning'?C.greenBg:'#1a1200',border:`1px solid ${c.type==='returning'?C.greenBorder:C.gold+'33'}`,padding:'2px 6px',borderRadius:'2px'}}>{c.type==='returning'?'Abituale':'Nuovo'}</span>
                 </div>
-                <div style={{fontSize:'11px',color:C.muted}}>{c.company} · {c.city}</div>
+                <div style={{fontSize:'11px',color:C.muted}}>{c.company}{c.city?` · ${c.city}`:''}</div>
                 <div style={{fontSize:'10px',color:C.dim,marginTop:'3px',fontFamily:'monospace'}}>?client={token}</div>
               </div>
               <div style={{display:'flex',gap:'8px',flexShrink:0}}>
@@ -370,6 +358,7 @@ function AdminPanel({ onEnter }){
 
 export default function App(){
   const [view,setView]=useState(null);
+  const [clients,setClients]=useState({});
   const [cart,setCart]=useState([]);
   const [confirmed,setConfirmed]=useState(false);
   const [lang,setLang]=useState('IT');
@@ -379,31 +368,35 @@ export default function App(){
 
   useEffect(()=>{
     const t=getToken();
-    setView(t&&CLIENTS[t]?t:'admin');
-    fetch('/api/precios')
-      .then(r=>r.json())
-      .then(data=>{
-        const grouped={};
-        const offertas=[];
-        data.precios.forEach(p=>{
-          if(!grouped[p.marca]) grouped[p.marca]=[];
-          grouped[p.marca].push(p);
-          if(p.offerta && p.prezzo_speciale) offertas.push(p);
-        });
-        const brandList=BRAND_ORDER.filter(name=>grouped[name]).map(name=>({ name, desc:BRAND_DESC[name]||'', cuts:grouped[name] }));
-        setBrands(brandList);
-        setSpeciali(offertas);
-        setLoading(false);
-      })
-      .catch(()=>setLoading(false));
+
+    Promise.all([
+      fetch('/api/clientes').then(r=>r.json()),
+      fetch('/api/precios').then(r=>r.json()),
+    ]).then(([clientData, precioData])=>{
+      const loadedClients = clientData.clientes || {};
+      setClients(loadedClients);
+      setView(t&&loadedClients[t]?t:'admin');
+
+      const grouped={};
+      const offertas=[];
+      precioData.precios.forEach(p=>{
+        if(!grouped[p.marca]) grouped[p.marca]=[];
+        grouped[p.marca].push(p);
+        if(p.offerta && p.prezzo_speciale) offertas.push(p);
+      });
+      const brandList=BRAND_ORDER.filter(name=>grouped[name]).map(name=>({ name, desc:BRAND_DESC[name]||'', cuts:grouped[name] }));
+      setBrands(brandList);
+      setSpeciali(offertas);
+      setLoading(false);
+    }).catch(()=>setLoading(false));
   },[]);
 
   const handleConfirm=async()=>{
     if(cart.length===0||confirmed)return;
-    const client=CLIENTS[view];
+    const client=clients[view];
     const payload={
       clientName: client.name,
-      company: client.company,
+      company: client.company||'',
       phone: client.phone||'',
       cart: cart.map(i=>({name:`${i.brandName} - ${i.cutName}`, qty:i.qty, unit:i.unidad})),
       timestamp: new Date().toISOString()
@@ -429,8 +422,11 @@ export default function App(){
     </div>
   );
 
-  if(view==='admin')return <AdminPanel onEnter={setView}/>;
-  const client=CLIENTS[view];
+  if(view==='admin') return <AdminPanel clients={clients} onEnter={setView}/>;
+
+  const client=clients[view];
+  const habitual=HABITUAL[view]||[];
+
   return(
     <div>
       <div style={{background:'#0a0a0a',borderBottom:`1px solid ${C.border}`,position:'sticky',top:0,zIndex:100}}>
@@ -438,16 +434,16 @@ export default function App(){
           <div style={{display:'flex',alignItems:'center',gap:'12px'}}>
             <span style={{fontSize:'15px',letterSpacing:'0.06em',color:C.gold}}>Sashi Beef</span>
             <span style={{color:C.border}}>|</span>
-            <span style={{fontSize:'12px',color:C.muted}}>{client.company}</span>
+            <span style={{fontSize:'12px',color:C.muted}}>{client.company||client.name}</span>
           </div>
           <div style={{display:'flex',gap:'8px'}}>
             {['IT','EN'].map(l=><button key={l} onClick={()=>setLang(l)} style={{background:'none',border:`1px solid ${l===lang?C.gold:'transparent'}`,color:l===lang?C.gold:C.muted,padding:'3px 10px',borderRadius:'2px',cursor:'pointer',fontSize:'11px',fontFamily:'Georgia'}}>{l}</button>)}
           </div>
         </div>
       </div>
-      {client.type==='new'
-        ?<NewClientView client={client} brands={brands} speciali={speciali} cart={cart} setCart={setCart} onConfirm={handleConfirm} confirmed={confirmed}/>
-        :<ReturningClientView client={client} brands={brands} speciali={speciali} cart={cart} setCart={setCart} onConfirm={handleConfirm} confirmed={confirmed}/>
+      {client.type==='returning'
+        ?<ReturningClientView client={client} habitual={habitual} brands={brands} speciali={speciali} cart={cart} setCart={setCart} onConfirm={handleConfirm} confirmed={confirmed}/>
+        :<NewClientView client={client} brands={brands} speciali={speciali} cart={cart} setCart={setCart} onConfirm={handleConfirm} confirmed={confirmed}/>
       }
     </div>
   );
