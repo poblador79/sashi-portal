@@ -100,7 +100,7 @@ function PrezziSpeciali({ items, onAdd }) {
         <div style={{ fontSize:'11px', letterSpacing:'0.2em', textTransform:'uppercase', color:C.gold }}>Prezzi Speciali</div>
         <div style={{ fontSize:'10px', color:'#6a4a20', background:'#1a0e00', border:'1px solid #3a2010', padding:'2px 10px', borderRadius:'2px', letterSpacing:'0.08em', textTransform:'uppercase' }}>Questa settimana</div>
       </div>
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:'1px', background:`${C.gold}33`, border:`1px solid ${C.gold}44` }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(280px, 1fr))', gap:'1px', background:`${C.gold}33`, border:`1px solid ${C.gold}44` }}>
         {items.map((p, i) => <SpecialRow key={i} cut={p} onAdd={onAdd}/>)}
       </div>
     </div>
